@@ -74,52 +74,7 @@ class App {
       this.renderSidebarProjects();
       this.renderProjectOptionsInModals();
     } catch (err) {
-      console.warn('Backend connection note:', err.message);
-      
-      // Graceful fallback sample data if backend is offline
-      const fallbackProjects = [
-        { id: 'proj-1', name: 'AI Platform MVP', color: '#6366f1' },
-        { id: 'proj-2', name: 'Design System', color: '#ec4899' },
-        { id: 'proj-3', name: 'Infrastructure & Cloud', color: '#06b6d4' }
-      ];
-
-      const fallbackTasks = [
-        {
-          id: 'task-1',
-          title: 'Architect Neural Task Decomposition Pipeline',
-          description: 'Design autonomous pipeline for milestone breakdown with risk indicators.',
-          status: 'in-progress',
-          priority: 'urgent',
-          quadrant: 'do-first',
-          projectId: 'proj-1',
-          dueDate: new Date().toISOString().split('T')[0],
-          estimatedMinutes: 180,
-          spentMinutes: 45,
-          subtasks: [
-            { id: 'st-1', title: 'Define heuristic intent classification', completed: true },
-            { id: 'st-2', title: 'Implement dependency tree algorithm', completed: false }
-          ]
-        },
-        {
-          id: 'task-2',
-          title: 'Design Glassmorphism Component Library',
-          description: 'Craft sleek UI cards, glowing status badges, and smooth animations.',
-          status: 'todo',
-          priority: 'high',
-          quadrant: 'schedule',
-          projectId: 'proj-2',
-          dueDate: new Date().toISOString().split('T')[0],
-          estimatedMinutes: 120,
-          spentMinutes: 0,
-          subtasks: []
-        }
-      ];
-
-      window.state.setProjects(fallbackProjects);
-      window.state.setTasks(fallbackTasks);
-      this.renderSidebarProjects();
-      this.renderProjectOptionsInModals();
-      window.showToast('Note: Backend server at http://localhost:3000 was unreachable, loaded cached preview', 'info');
+      console.warn('Initialization note:', err.message);
     }
   }
 
