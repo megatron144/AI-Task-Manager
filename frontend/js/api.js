@@ -1,10 +1,13 @@
-/**
- * AI TASK MANAGER - REST API CLIENT
- */
+function getApiBase() {
+  if (typeof window !== 'undefined') {
+    if (window.location.protocol === 'file:' || (window.location.port && window.location.port !== '3000')) {
+      return 'http://localhost:3000';
+    }
+  }
+  return '';
+}
 
-const API_BASE = window.location.origin.includes('localhost') || window.location.origin.includes('127.0.0.1')
-  ? ''
-  : '';
+const API_BASE = getApiBase();
 
 class ApiClient {
   async _request(endpoint, options = {}) {
