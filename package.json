@@ -5,8 +5,10 @@
   "scripts": {
     "start": "node backend/server.js",
     "dev": "node backend/server.js",
+    "build:css": "cd backend && ./node_modules/.bin/tailwindcss -i ../frontend/css/tailwind-input.css -o ../frontend/css/tailwind.css --minify",
+    "watch:css": "cd backend && ./node_modules/.bin/tailwindcss -i ../frontend/css/tailwind-input.css -o ../frontend/css/tailwind.css --watch",
     "install:backend": "cd backend && npm install",
-    "install:all": "npm run install:backend"
+    "install:all": "npm run install:backend && npm run build:css"
   },
   "keywords": [
     "ai",

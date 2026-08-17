@@ -38,17 +38,37 @@
       "priority": "urgent",
       "quadrant": "do-first",
       "projectId": "proj-1",
-      "tags": ["AI", "Architecture", "Core"],
+      "tags": [
+        "AI",
+        "Architecture",
+        "Core"
+      ],
       "dueDate": "2026-08-18",
       "dueTime": "17:00",
       "estimatedMinutes": 180,
       "spentMinutes": 95,
       "aiGenerated": true,
       "subtasks": [
-        { "id": "sub-1", "title": "Define heuristic intent classification prompts", "completed": true },
-        { "id": "sub-2", "title": "Implement dependency tree resolver algorithm", "completed": true },
-        { "id": "sub-3", "title": "Add fallback rule-based subtask generator", "completed": false },
-        { "id": "sub-4", "title": "Benchmark latency and token economy", "completed": false }
+        {
+          "id": "sub-1",
+          "title": "Define heuristic intent classification prompts",
+          "completed": true
+        },
+        {
+          "id": "sub-2",
+          "title": "Implement dependency tree resolver algorithm",
+          "completed": true
+        },
+        {
+          "id": "sub-3",
+          "title": "Add fallback rule-based subtask generator",
+          "completed": false
+        },
+        {
+          "id": "sub-4",
+          "title": "Benchmark latency and token economy",
+          "completed": false
+        }
       ],
       "notes": "Ensure fallback runs in under 15ms even without internet connectivity.",
       "createdAt": "2026-08-15T09:00:00.000Z",
@@ -62,16 +82,32 @@
       "priority": "high",
       "quadrant": "schedule",
       "projectId": "proj-2",
-      "tags": ["UI/UX", "CSS", "Design"],
+      "tags": [
+        "UI/UX",
+        "CSS",
+        "Design"
+      ],
       "dueDate": "2026-08-19",
       "dueTime": "15:00",
       "estimatedMinutes": 120,
       "spentMinutes": 60,
       "aiGenerated": false,
       "subtasks": [
-        { "id": "sub-5", "title": "Tokenize color palette & backdrop blur filters", "completed": true },
-        { "id": "sub-6", "title": "Build dynamic dark/light theme switchers", "completed": true },
-        { "id": "sub-7", "title": "Add smooth card drag-and-drop animations", "completed": false }
+        {
+          "id": "sub-5",
+          "title": "Tokenize color palette & backdrop blur filters",
+          "completed": true
+        },
+        {
+          "id": "sub-6",
+          "title": "Build dynamic dark/light theme switchers",
+          "completed": true
+        },
+        {
+          "id": "sub-7",
+          "title": "Add smooth card drag-and-drop animations",
+          "completed": false
+        }
       ],
       "notes": "Maintain high contrast ratios for accessibility (WCAG AA).",
       "createdAt": "2026-08-15T11:00:00.000Z",
@@ -85,16 +121,32 @@
       "priority": "medium",
       "quadrant": "schedule",
       "projectId": "proj-1",
-      "tags": ["Audio", "Productivity", "Feature"],
+      "tags": [
+        "Audio",
+        "Productivity",
+        "Feature"
+      ],
       "dueDate": "2026-08-16",
       "dueTime": "18:00",
       "estimatedMinutes": 90,
       "spentMinutes": 85,
       "aiGenerated": false,
       "subtasks": [
-        { "id": "sub-8", "title": "Synthesize soft chime with Web Audio API oscillator", "completed": true },
-        { "id": "sub-9", "title": "Track completed focus blocks against active task", "completed": true },
-        { "id": "sub-10", "title": "Add notification and visual countdown ring", "completed": true }
+        {
+          "id": "sub-8",
+          "title": "Synthesize soft chime with Web Audio API oscillator",
+          "completed": true
+        },
+        {
+          "id": "sub-9",
+          "title": "Track completed focus blocks against active task",
+          "completed": true
+        },
+        {
+          "id": "sub-10",
+          "title": "Add notification and visual countdown ring",
+          "completed": true
+        }
       ],
       "notes": "Zero external mp3 assets needed; Web Audio API handles everything reliably.",
       "createdAt": "2026-08-14T14:00:00.000Z",
@@ -108,15 +160,27 @@
       "priority": "high",
       "quadrant": "do-first",
       "projectId": "proj-3",
-      "tags": ["Backend", "Storage", "Reliability"],
+      "tags": [
+        "Backend",
+        "Storage",
+        "Reliability"
+      ],
       "dueDate": "2026-08-16",
       "dueTime": "12:00",
       "estimatedMinutes": 60,
       "spentMinutes": 45,
       "aiGenerated": false,
       "subtasks": [
-        { "id": "sub-11", "title": "Write atomic temp-file replace logic", "completed": true },
-        { "id": "sub-12", "title": "Implement auto-seed on initial empty boot", "completed": true }
+        {
+          "id": "sub-11",
+          "title": "Write atomic temp-file replace logic",
+          "completed": true
+        },
+        {
+          "id": "sub-12",
+          "title": "Implement auto-seed on initial empty boot",
+          "completed": true
+        }
       ],
       "notes": "Protected against concurrent write race conditions.",
       "createdAt": "2026-08-14T10:00:00.000Z",
@@ -130,16 +194,32 @@
       "priority": "high",
       "quadrant": "do-first",
       "projectId": "proj-1",
-      "tags": ["Matrix", "Productivity", "UI"],
+      "tags": [
+        "Matrix",
+        "Productivity",
+        "UI"
+      ],
       "dueDate": "2026-08-20",
       "dueTime": "16:00",
       "estimatedMinutes": 100,
       "spentMinutes": 70,
       "aiGenerated": false,
       "subtasks": [
-        { "id": "sub-13", "title": "Create 4-quadrant responsive CSS grid", "completed": true },
-        { "id": "sub-14", "title": "Implement cross-quadrant drag and priority auto-calc", "completed": true },
-        { "id": "sub-15", "title": "Verify mobile responsive card collapse", "completed": false }
+        {
+          "id": "sub-13",
+          "title": "Create 4-quadrant responsive CSS grid",
+          "completed": true
+        },
+        {
+          "id": "sub-14",
+          "title": "Implement cross-quadrant drag and priority auto-calc",
+          "completed": true
+        },
+        {
+          "id": "sub-15",
+          "title": "Verify mobile responsive card collapse",
+          "completed": false
+        }
       ],
       "notes": "Add clear badges for (1) Do First, (2) Schedule, (3) Delegate, (4) Eliminate.",
       "createdAt": "2026-08-16T13:00:00.000Z",
@@ -153,16 +233,32 @@
       "priority": "medium",
       "quadrant": "delegate",
       "projectId": "proj-4",
-      "tags": ["Launch", "Marketing", "Community"],
+      "tags": [
+        "Launch",
+        "Marketing",
+        "Community"
+      ],
       "dueDate": "2026-08-22",
       "dueTime": "14:00",
       "estimatedMinutes": 150,
       "spentMinutes": 0,
       "aiGenerated": true,
       "subtasks": [
-        { "id": "sub-16", "title": "Draft release notes and key feature bullets", "completed": false },
-        { "id": "sub-17", "title": "Record 60-second video demo walkthrough", "completed": false },
-        { "id": "sub-18", "title": "Publish blog post and share on social channels", "completed": false }
+        {
+          "id": "sub-16",
+          "title": "Draft release notes and key feature bullets",
+          "completed": false
+        },
+        {
+          "id": "sub-17",
+          "title": "Record 60-second video demo walkthrough",
+          "completed": false
+        },
+        {
+          "id": "sub-18",
+          "title": "Publish blog post and share on social channels",
+          "completed": false
+        }
       ],
       "notes": "Highlight AI Task Decomposition and Focus Timer as hero features.",
       "createdAt": "2026-08-16T15:00:00.000Z",
@@ -176,16 +272,32 @@
       "priority": "urgent",
       "quadrant": "do-first",
       "projectId": "proj-1",
-      "tags": ["NLP", "Productivity", "Shortcuts"],
+      "tags": [
+        "NLP",
+        "Productivity",
+        "Shortcuts"
+      ],
       "dueDate": "2026-08-18",
       "dueTime": "19:00",
       "estimatedMinutes": 90,
       "spentMinutes": 0,
       "aiGenerated": false,
       "subtasks": [
-        { "id": "sub-19", "title": "Build regex & semantic date extractor", "completed": false },
-        { "id": "sub-20", "title": "Parse hashtags as tags and @mentions as projects", "completed": false },
-        { "id": "sub-21", "title": "Create floating Command Palette HUD modal", "completed": false }
+        {
+          "id": "sub-19",
+          "title": "Build regex & semantic date extractor",
+          "completed": false
+        },
+        {
+          "id": "sub-20",
+          "title": "Parse hashtags as tags and @mentions as projects",
+          "completed": false
+        },
+        {
+          "id": "sub-21",
+          "title": "Create floating Command Palette HUD modal",
+          "completed": false
+        }
       ],
       "notes": "Bind to Cmd+K (Mac) and Ctrl+K (Windows/Linux).",
       "createdAt": "2026-08-17T07:30:00.000Z",
