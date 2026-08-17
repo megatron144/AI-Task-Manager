@@ -1,0 +1,21 @@
+{
+  "name": "ai-task-manager",
+  "version": "1.0.0",
+  "description": "An intelligent, beautiful AI-powered Task & Project Management web application",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node backend/server.js",
+    "install:backend": "cd backend && npm install",
+    "install:all": "npm run install:backend"
+  },
+  "keywords": [
+    "ai",
+    "task-manager",
+    "kanban",
+    "pomodoro",
+    "eisenhower-matrix",
+    "productivity"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

@@ -1,14 +1,747 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Task Manager - Autonomous Intelligence & Productivity</title>
+  <meta name="description" content="AI-Powered Task and Project Management with Neural Goal Decomposition, Eisenhower Matrix, Kanban, and Integrated Focus Engine.">
+
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/kanban.css">
+  <link rel="stylesheet" href="css/views.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/animations.css">
 </head>
-
 <body>
+  <div id="app">
+    <!-- ==========================================
+         SIDEBAR NAVIGATION
+         ========================================== -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="brand-logo">✨</div>
+        <div class="brand-info">
+          <div class="brand-title">NeuroTask AI</div>
+          <div class="brand-tagline">Intelligent Flow</div>
+        </div>
+      </div>
 
+      <div class="sidebar-content">
+        <!-- Main Views Navigation -->
+        <div>
+          <div class="sidebar-section-title">Views</div>
+          <ul class="nav-list">
+            <li class="nav-item active" data-view="kanban" id="nav-kanban">
+              <span class="icon">📋</span>
+              <span>Kanban Board</span>
+            </li>
+            <li class="nav-item" data-view="list" id="nav-list">
+              <span class="icon">📄</span>
+              <span>List View</span>
+            </li>
+            <li class="nav-item" data-view="matrix" id="nav-matrix">
+              <span class="icon">🔲</span>
+              <span>Eisenhower Matrix</span>
+            </li>
+            <li class="nav-item" data-view="calendar" id="nav-calendar">
+              <span class="icon">📅</span>
+              <span>Calendar</span>
+            </li>
+            <li class="nav-item" data-view="analytics" id="nav-analytics">
+              <span class="icon">📊</span>
+              <span>Analytics & Trends</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Projects Filter Section -->
+        <div>
+          <div class="sidebar-section-title">
+            <span>Projects</span>
+            <button class="add-project-btn" id="sidebar-add-project-btn" title="Add Project">+ New</button>
+          </div>
+          <ul class="project-list" id="sidebar-project-list">
+            <!-- Dynamic Project Items injected here -->
+          </ul>
+        </div>
+      </div>
+
+      <!-- Sidebar Footer: AI Daily Standup Card -->
+      <div class="sidebar-footer">
+        <div class="ai-standup-card">
+          <div class="ai-standup-header">
+            <span>🤖</span>
+            <span>AI Daily Standup</span>
+          </div>
+          <p class="ai-standup-desc">Analyze workload, detect bottlenecks, and time-block today's priorities.</p>
+          <button class="ai-standup-btn" id="sidebar-ai-standup-btn">
+            <span>✨</span>
+            <span>Launch Daily Briefing</span>
+          </button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ==========================================
+         MAIN CONTENT & TOPBAR
+         ========================================== -->
+    <main class="main-wrapper">
+      <!-- Header -->
+      <header class="header">
+        <div class="header-left">
+          <div class="view-title-group">
+            <h1 class="current-view-title" id="current-view-title-text">Kanban Board</h1>
+            <span class="view-subtitle" id="current-view-subtitle-text">Visualize and manage workflow stages</span>
+          </div>
+        </div>
+
+        <!-- Global Search / NLP Quick Add Trigger -->
+        <div class="header-center">
+          <div class="search-bar" id="header-search-bar" title="Click to search or use Cmd+K">
+            <span style="color: var(--text-muted); font-size: 0.9rem;">🔍</span>
+            <input type="text" placeholder="Search tasks or type 'deploy app tomorrow #urgent'..." readonly>
+            <span class="search-shortcut">⌘K</span>
+          </div>
+        </div>
+
+        <!-- Header Actions -->
+        <div class="header-right">
+          <!-- Pomodoro Pill -->
+          <div class="pomodoro-pill" id="pomodoro-header-pill" title="Click to Start/Pause Pomodoro Focus Session">
+            <span class="pomodoro-icon">⏱️</span>
+            <span class="pomodoro-time" id="pomodoro-display-time">25:00</span>
+          </div>
+
+          <!-- AI Task Breakdown Action -->
+          <button class="btn btn-ai" id="header-ai-breakdown-btn">
+            <span>✨</span>
+            <span>AI Decompose</span>
+          </button>
+
+          <!-- New Task Button -->
+          <button class="btn btn-primary" id="header-new-task-btn">
+            <span>➕</span>
+            <span>New Task</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button class="btn-icon" id="header-theme-toggle-btn" title="Toggle Dark/Light Theme">
+            ☀️
+          </button>
+
+          <!-- Settings -->
+          <button class="btn-icon" id="header-settings-btn" title="Settings & Backup">
+            ⚙️
+          </button>
+        </div>
+      </header>
+
+      <!-- Viewport View Switching -->
+      <div class="view-viewport">
+        <!-- 1. KANBAN BOARD VIEW -->
+        <section class="view-section active" id="view-kanban">
+          <div class="kanban-board-container">
+            <div class="kanban-toolbar">
+              <div class="kanban-filters">
+                <select class="filter-select" id="filter-project-select">
+                  <option value="all">All Projects</option>
+                </select>
+                <select class="filter-select" id="filter-priority-select">
+                  <option value="all">All Priorities</option>
+                  <option value="urgent">🔴 Urgent</option>
+                  <option value="high">🟠 High</option>
+                  <option value="medium">🔵 Medium</option>
+                  <option value="low">⚪ Low</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="kanban-columns" id="kanban-board">
+              <!-- Column: To Do -->
+              <div class="kanban-column" data-status="todo">
+                <div class="column-header">
+                  <div class="column-title-group">
+                    <span class="column-indicator todo"></span>
+                    <span class="column-title">To Do</span>
+                    <span class="column-count" data-status="todo">0</span>
+                  </div>
+                  <button class="column-quick-add" title="Quick Add Task">+</button>
+                </div>
+                <div class="column-cards" data-status="todo"></div>
+              </div>
+
+              <!-- Column: In Progress -->
+              <div class="kanban-column" data-status="in-progress">
+                <div class="column-header">
+                  <div class="column-title-group">
+                    <span class="column-indicator in-progress"></span>
+                    <span class="column-title">In Progress</span>
+                    <span class="column-count" data-status="in-progress">0</span>
+                  </div>
+                  <button class="column-quick-add" title="Quick Add Task">+</button>
+                </div>
+                <div class="column-cards" data-status="in-progress"></div>
+              </div>
+
+              <!-- Column: In Review -->
+              <div class="kanban-column" data-status="in-review">
+                <div class="column-header">
+                  <div class="column-title-group">
+                    <span class="column-indicator in-review"></span>
+                    <span class="column-title">In Review</span>
+                    <span class="column-count" data-status="in-review">0</span>
+                  </div>
+                  <button class="column-quick-add" title="Quick Add Task">+</button>
+                </div>
+                <div class="column-cards" data-status="in-review"></div>
+              </div>
+
+              <!-- Column: Completed -->
+              <div class="kanban-column" data-status="completed">
+                <div class="column-header">
+                  <div class="column-title-group">
+                    <span class="column-indicator completed"></span>
+                    <span class="column-title">Completed</span>
+                    <span class="column-count" data-status="completed">0</span>
+                  </div>
+                  <button class="column-quick-add" title="Quick Add Task">+</button>
+                </div>
+                <div class="column-cards" data-status="completed"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. LIST VIEW -->
+        <section class="view-section" id="view-list">
+          <div class="list-view-container">
+            <div class="list-table-card">
+              <div class="list-table-header">
+                <div></div>
+                <div>Task Title</div>
+                <div>Priority</div>
+                <div>Status</div>
+                <div>Project</div>
+                <div>Due Date</div>
+                <div>Est. Time</div>
+                <div>Actions</div>
+              </div>
+              <div class="list-table-body" id="list-table-body"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. EISENHOWER MATRIX VIEW -->
+        <section class="view-section" id="view-matrix">
+          <div class="matrix-container">
+            <div class="matrix-grid">
+              <!-- Quadrant 1: Urgent & Important -->
+              <div class="matrix-quadrant q-do-first" data-quadrant="do-first">
+                <div class="quadrant-header">
+                  <div>
+                    <div class="quadrant-title">🔥 1. Do First</div>
+                    <div class="quadrant-desc">Urgent & Important (Critical Deadlines)</div>
+                  </div>
+                  <span class="column-count">0</span>
+                </div>
+                <div class="quadrant-cards" data-quadrant="do-first"></div>
+              </div>
+
+              <!-- Quadrant 2: Not Urgent & Important -->
+              <div class="matrix-quadrant q-schedule" data-quadrant="schedule">
+                <div class="quadrant-header">
+                  <div>
+                    <div class="quadrant-title">📅 2. Schedule</div>
+                    <div class="quadrant-desc">Not Urgent & Important (Strategic Goals)</div>
+                  </div>
+                  <span class="column-count">0</span>
+                </div>
+                <div class="quadrant-cards" data-quadrant="schedule"></div>
+              </div>
+
+              <!-- Quadrant 3: Urgent & Not Important -->
+              <div class="matrix-quadrant q-delegate" data-quadrant="delegate">
+                <div class="quadrant-header">
+                  <div>
+                    <div class="quadrant-title">👥 3. Delegate</div>
+                    <div class="quadrant-desc">Urgent & Not Important (Interruptions)</div>
+                  </div>
+                  <span class="column-count">0</span>
+                </div>
+                <div class="quadrant-cards" data-quadrant="delegate"></div>
+              </div>
+
+              <!-- Quadrant 4: Not Urgent & Not Important -->
+              <div class="matrix-quadrant q-dont-do" data-quadrant="dont-do">
+                <div class="quadrant-header">
+                  <div>
+                    <div class="quadrant-title">🗑️ 4. Eliminate</div>
+                    <div class="quadrant-desc">Not Urgent & Not Important (Distractions)</div>
+                  </div>
+                  <span class="column-count">0</span>
+                </div>
+                <div class="quadrant-cards" data-quadrant="dont-do"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 4. CALENDAR VIEW -->
+        <section class="view-section" id="view-calendar">
+          <div class="calendar-container">
+            <div class="calendar-header-bar">
+              <div class="calendar-nav">
+                <button class="btn btn-secondary" id="cal-prev-month">◀ Prev</button>
+                <button class="btn btn-secondary" id="cal-today-btn">Today</button>
+                <button class="btn btn-secondary" id="cal-next-month">Next ▶</button>
+              </div>
+              <h2 class="calendar-month-label" id="calendar-month-label">August 2026</h2>
+              <div style="font-size: 0.8rem; color: var(--text-muted);">Click any day to schedule a task</div>
+            </div>
+
+            <div class="calendar-grid-card">
+              <div class="calendar-weekdays">
+                <div>Sun</div>
+                <div>Mon</div>
+                <div>Tue</div>
+                <div>Wed</div>
+                <div>Thu</div>
+                <div>Fri</div>
+                <div>Sat</div>
+              </div>
+              <div class="calendar-days-grid" id="calendar-days-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 5. ANALYTICS & TRENDS VIEW -->
+        <section class="view-section" id="view-analytics">
+          <div class="analytics-container" id="analytics-view">
+            <!-- KPI Summary Cards -->
+            <div class="analytics-grid-stats">
+              <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-indigo">🧠</div>
+                <div class="stat-info">
+                  <span class="stat-label">Productivity Score</span>
+                  <span class="stat-value" id="stat-productivity-score">88/100</span>
+                  <span class="stat-subtext">Calculated from velocity & focus</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-emerald">📈</div>
+                <div class="stat-info">
+                  <span class="stat-label">Completion Rate</span>
+                  <span class="stat-value" id="stat-completion-rate">75%</span>
+                  <span class="stat-subtext">Tasks resolved on-time</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-purple">⏱️</div>
+                <div class="stat-info">
+                  <span class="stat-label">Deep Focus Time</span>
+                  <span class="stat-value" id="stat-focus-hours">12.5h</span>
+                  <span class="stat-subtext">Logged Pomodoro blocks</span>
+                </div>
+              </div>
+
+              <div class="stat-card">
+                <div class="stat-icon-wrapper stat-icon-amber">🚨</div>
+                <div class="stat-info">
+                  <span class="stat-label">Overdue Bottlenecks</span>
+                  <span class="stat-value" id="stat-overdue-count">0</span>
+                  <span class="stat-subtext">Immediate action needed</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Charts Row -->
+            <div class="analytics-charts-row">
+              <!-- Velocity Area Chart -->
+              <div class="chart-card">
+                <div class="chart-card-header">
+                  <h3 class="chart-title">⚡ 7-Day Completion Velocity</h3>
+                  <span class="badge badge-ai">Live Data</span>
+                </div>
+                <div class="velocity-chart-wrapper">
+                  <svg id="velocity-chart-svg" class="velocity-chart-svg" viewBox="0 0 500 180"></svg>
+                </div>
+              </div>
+
+              <!-- Projects Breakdown -->
+              <div class="chart-card">
+                <div class="chart-card-header">
+                  <h3 class="chart-title">🎯 Project Milestones</h3>
+                </div>
+                <div class="project-progress-list" id="project-progress-list"></div>
+              </div>
+            </div>
+
+            <!-- Gamified Badges -->
+            <div class="chart-card">
+              <div class="chart-card-header">
+                <h3 class="chart-title">🏆 Productivity Achievements</h3>
+              </div>
+              <div class="achievements-grid" id="achievements-grid"></div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- ==========================================
+         MODALS & DRAWERS
+         ========================================== -->
+
+    <!-- 1. Task Create/Edit Modal -->
+    <div class="modal-overlay" id="task-modal">
+      <div class="modal-card">
+        <div class="modal-header">
+          <h2 class="modal-title" id="modal-task-dialog-title">Create New Task</h2>
+          <button class="modal-close-btn" id="close-task-modal-btn">✖</button>
+        </div>
+        <form id="task-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Task Title</label>
+              <input type="text" class="form-input" id="modal-task-title" placeholder="e.g. Design Landing Page Wireframes" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Status</label>
+                <select class="form-select" id="modal-task-status">
+                  <option value="todo">To Do</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="in-review">In Review</option>
+                  <option value="completed">Completed</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label class="form-label">Project</label>
+                <select class="form-select" id="modal-task-project">
+                  <option value="">No Project</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Priority</label>
+              <div class="pill-radio-group">
+                <div class="pill-radio-item pill-priority" data-value="urgent">🔴 Urgent</div>
+                <div class="pill-radio-item pill-priority" data-value="high">🟠 High</div>
+                <div class="pill-radio-item pill-priority active" data-value="medium">🔵 Medium</div>
+                <div class="pill-radio-item pill-priority" data-value="low">⚪ Low</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Eisenhower Quadrant</label>
+              <div class="pill-radio-group">
+                <div class="pill-radio-item pill-quadrant" data-value="do-first">🔥 Do First</div>
+                <div class="pill-radio-item pill-quadrant active" data-value="schedule">📅 Schedule</div>
+                <div class="pill-radio-item pill-quadrant" data-value="delegate">👥 Delegate</div>
+                <div class="pill-radio-item pill-quadrant" data-value="dont-do">🗑️ Eliminate</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Due Date</label>
+                <input type="date" class="form-input" id="modal-task-duedate">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Due Time</label>
+                <input type="time" class="form-input" id="modal-task-duetime" value="18:00">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Estimated Time (Mins)</label>
+                <input type="number" class="form-input" id="modal-task-est-mins" value="45">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Spent Time (Mins)</label>
+                <input type="number" class="form-input" id="modal-task-spent-mins" value="0">
+              </div>
+            </div>
+
+            <!-- Subtasks Checklist -->
+            <div class="form-group">
+              <label class="form-label">Subtasks & Milestones</label>
+              <div class="subtasks-editor">
+                <div id="modal-subtasks-list" style="display: flex; flex-direction: column; gap: 0.5rem;"></div>
+                <div class="add-subtask-input-row">
+                  <input type="text" class="form-input" id="modal-new-subtask-title" placeholder="Add subtask and press Enter...">
+                  <button type="button" class="btn btn-secondary" id="modal-add-subtask-btn">+ Add</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Tags (comma separated)</label>
+              <input type="text" class="form-input" id="modal-task-tags" placeholder="UI, Feature, Priority">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Description & Notes</label>
+              <textarea class="form-textarea" id="modal-task-desc" placeholder="Detailed requirements and context..."></textarea>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" id="modal-delete-task-btn" style="color: var(--accent-rose); display: none;">🗑️ Delete Task</button>
+            <div style="display: flex; gap: 0.75rem; margin-left: auto;">
+              <button type="button" class="btn btn-secondary" onclick="document.getElementById('task-modal').classList.remove('active')">Cancel</button>
+              <button type="submit" class="btn btn-primary">Save Task</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2. AI Task Decomposition Modal -->
+    <div class="modal-overlay" id="ai-breakdown-modal">
+      <div class="modal-card" style="max-width: 680px;">
+        <div class="ai-modal-header-banner">
+          <div class="brand-logo" style="width: 32px; height: 32px;">✨</div>
+          <div style="flex: 1;">
+            <h2 class="modal-title" style="font-size: 1.1rem;">AI Autonomous Goal Decomposition</h2>
+            <p style="font-size: 0.75rem; color: var(--text-secondary);">Transforms high-level objectives into sequenced, actionable milestone subtasks.</p>
+          </div>
+          <button class="modal-close-btn" onclick="window.aiController.closeBreakdownModal()">✖</button>
+        </div>
+
+        <div class="modal-body">
+          <div class="form-group">
+            <label class="form-label">Enter Project Goal / Objective</label>
+            <div style="display: flex; gap: 0.6rem;">
+              <input type="text" class="form-input" id="ai-task-prompt-input" placeholder="e.g. Build User Authentication with OAuth2 & JWT" style="flex: 1;">
+              <button class="btn btn-ai" id="ai-generate-breakdown-btn">✨ Generate AI Breakdown</button>
+            </div>
+          </div>
+
+          <!-- Result Preview -->
+          <div id="ai-breakdown-result-container" style="display: none; flex-direction: column; gap: 1rem;">
+            <div class="ai-reasoning-box">
+              <span>🧠</span>
+              <span id="ai-reasoning-text"></span>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">Generated Subtasks & Time Estimates</label>
+              <div class="ai-subtasks-preview-list" id="ai-subtasks-preview-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" onclick="window.aiController.closeBreakdownModal()">Close</button>
+          <button type="button" class="btn btn-ai" id="ai-save-breakdown-btn" style="display: none;">🚀 Add to Task Board</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. AI Daily Briefing Drawer -->
+    <div class="drawer-overlay" id="ai-briefing-drawer-overlay">
+      <div class="drawer-content">
+        <div class="drawer-header">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="font-size: 1.25rem;">🤖</span>
+            <h2 class="modal-title" style="font-size: 1.05rem;">AI Daily Executive Briefing</h2>
+          </div>
+          <button class="modal-close-btn" id="close-briefing-drawer">✖</button>
+        </div>
+
+        <div class="drawer-body">
+          <div>
+            <h3 style="font-size: 1rem; font-weight: 700;" id="briefing-greeting">Good morning!</h3>
+            <p style="font-size: 0.85rem; color: var(--text-secondary); margin-top: 0.35rem;" id="briefing-summary">Analyzing current workload...</p>
+          </div>
+
+          <!-- Top 3 Focus Tasks -->
+          <div class="form-group">
+            <label class="form-label">🎯 Top Focus Priorities Today</label>
+            <div style="display: flex; flex-direction: column; gap: 0.6rem;" id="briefing-top-focus"></div>
+          </div>
+
+          <!-- Time-Blocked Schedule -->
+          <div class="form-group">
+            <label class="form-label">⏱️ Energy-Matched Schedule</label>
+            <div class="schedule-timeline" id="briefing-schedule-timeline"></div>
+          </div>
+
+          <!-- Bottlenecks & Insights -->
+          <div class="form-group">
+            <label class="form-label">💡 AI Bottleneck & Risk Alerts</label>
+            <div style="display: flex; flex-direction: column; gap: 0.5rem;" id="briefing-insights-list"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4. AI Copilot Chat Drawer -->
+    <div class="drawer-overlay" id="ai-chat-drawer-overlay">
+      <div class="drawer-content">
+        <div class="drawer-header">
+          <div style="display: flex; align-items: center; gap: 0.6rem;">
+            <span style="font-size: 1.25rem;">✨</span>
+            <h2 class="modal-title" style="font-size: 1.05rem;">AI Task Copilot</h2>
+          </div>
+          <button class="modal-close-btn" id="close-chat-drawer">✖</button>
+        </div>
+
+        <div class="drawer-body" style="padding: 1rem;">
+          <div class="chat-messages-container" id="chat-messages-container">
+            <div class="chat-bubble assistant">
+              👋 Hi there! I'm your <strong>AI Workload Copilot</strong>. Ask me what to work on next, request project summaries, or type <code>Break down [goal]</code> to decompose any task!
+            </div>
+          </div>
+        </div>
+
+        <div class="chat-input-row">
+          <input type="text" class="form-input" id="ai-chat-input" placeholder="Ask AI Copilot anything..." style="flex: 1;">
+          <button class="btn btn-ai" id="ai-chat-send-btn">Send</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5. Command Palette (Cmd+K) HUD -->
+    <div class="modal-overlay" id="command-palette-overlay">
+      <div class="modal-card command-palette-card">
+        <div class="command-input-wrapper">
+          <span style="color: var(--primary); font-size: 1.2rem;">⚡</span>
+          <input type="text" id="command-palette-input" placeholder="Type a task (e.g. 'Deploy release tomorrow 4pm #urgent') or jump to view..." autocomplete="off">
+          <span class="search-shortcut">ESC</span>
+        </div>
+
+        <!-- Live NLP Parser Preview -->
+        <div class="nlp-preview-bar" id="command-nlp-preview" style="display: none;"></div>
+
+        <div class="command-list" id="command-palette-items"></div>
+      </div>
+    </div>
+
+    <!-- 6. Project Creator Modal -->
+    <div class="modal-overlay" id="project-modal">
+      <div class="modal-card" style="max-width: 440px;">
+        <div class="modal-header">
+          <h2 class="modal-title">Create Project</h2>
+          <button class="modal-close-btn" id="close-project-modal-btn">✖</button>
+        </div>
+        <form id="project-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Project Name</label>
+              <input type="text" class="form-input" id="modal-project-name" placeholder="e.g. Mobile App Redesign" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Project Color Accent</label>
+              <input type="color" class="form-input" id="modal-project-color" value="#6366f1" style="height: 44px; padding: 4px; cursor: pointer;">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Description (Optional)</label>
+              <input type="text" class="form-input" id="modal-project-desc" placeholder="Core goals and roadmap...">
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('project-modal').classList.remove('active')">Cancel</button>
+            <button type="submit" class="btn btn-primary">Create Project</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 7. Settings Modal -->
+    <div class="modal-overlay" id="settings-modal">
+      <div class="modal-card" style="max-width: 520px;">
+        <div class="modal-header">
+          <h2 class="modal-title">Settings & Backup</h2>
+          <button class="modal-close-btn" id="close-settings-modal-btn">✖</button>
+        </div>
+        <form id="settings-form">
+          <div class="modal-body">
+            <div class="form-group">
+              <label class="form-label">Theme</label>
+              <select class="form-select" id="settings-theme-select">
+                <option value="dark">Cosmic Obsidian (Dark)</option>
+                <option value="light">Aurora Ice (Light)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" style="display: flex; align-items: center; gap: 0.5rem;">
+                <input type="checkbox" id="settings-sound-enabled" style="accent-color: var(--primary);">
+                <span>Enable Web Audio Acoustic Chimes & Clicks</span>
+              </label>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label">Pomodoro Work (Mins)</label>
+                <input type="number" class="form-input" id="settings-pomodoro-work" value="25" min="1" max="120">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pomodoro Break (Mins)</label>
+                <input type="number" class="form-input" id="settings-pomodoro-break" value="5" min="1" max="60">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">AI Engine Provider</label>
+              <select class="form-select" id="settings-ai-provider">
+                <option value="builtin">Built-in Intelligent Neural Heuristics (Zero API key needed)</option>
+                <option value="openai">OpenAI (Requires API Key)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label">OpenAI API Key (Optional)</label>
+              <input type="password" class="form-input" id="settings-api-key" placeholder="sk-...">
+            </div>
+
+            <div class="form-group" style="padding-top: 0.5rem; border-top: 1px solid var(--border-subtle);">
+              <label class="form-label">Data Backup & Restore</label>
+              <div style="display: flex; gap: 0.75rem; margin-top: 0.35rem;">
+                <button type="button" class="btn btn-secondary" id="settings-export-btn">💾 Export JSON</button>
+                <label class="btn btn-secondary" style="cursor: pointer;">
+                  📂 Restore JSON
+                  <input type="file" id="settings-import-input" accept=".json" style="display: none;">
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="document.getElementById('settings-modal').classList.remove('active')">Close</button>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Floating AI Trigger Bubble -->
+    <div class="floating-ai-trigger" id="floating-ai-trigger" title="AI Task Copilot">
+      <div class="pulse-ring"></div>
+      <span>✨</span>
+    </div>
+
+    <!-- Toast Notification Anchor -->
+    <div id="toast-container"></div>
+  </div>
+
+  <!-- Frontend JavaScript Modules -->
+  <script src="js/api.js"></script>
+  <script src="js/state.js"></script>
+  <script src="js/timer.js"></script>
+  <script src="js/kanban.js"></script>
+  <script src="js/views.js"></script>
+  <script src="js/analytics.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/commandPalette.js"></script>
+  <script src="js/app.js"></script>
 </body>
-
 </html>
